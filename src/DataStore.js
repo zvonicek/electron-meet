@@ -23,6 +23,10 @@ class DataStore extends Store {
         return MEET_ROOT + tag;
     }
 
+    isValidUrl(url) {
+        return url.startsWith(MEET_ROOT);
+    }
+
     getHomeUrl() {
         return MEET_ROOT;
     }

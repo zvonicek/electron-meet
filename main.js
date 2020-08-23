@@ -27,6 +27,13 @@ const addShortcut = () => {
 
 const createMenu = () => {
     tray = new Tray(Icons.microphoneOn);
+        
+    tray.on('drop-text', function(event, url) {
+        if (dataStore.isValidUrl(url)) {
+            mainWindow.loadURL(url);
+        }
+    });    
+
     displayMenu(tray);
 };
 
@@ -134,4 +141,12 @@ app.on('window-all-closed', function () {
 
 app.on('activate', function () {
     createWindow();
+});
+
+app.on('will-finish-launching', () => {
+    app.on('open-url', function(event, url) {
+        if (dataStore.isValidUrl(url)) {
+            mainWindow.loadURL(url);
+        }
+    });
 });
