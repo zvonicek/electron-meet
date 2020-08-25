@@ -12,6 +12,7 @@ const displayMenu = (tray) => {
         label: 'Microphone',
         id: 'is-microphone-on',
         type: 'checkbox',
+        accelerator: 'CommandOrControl+Shift+D',
         icon: Icons.microphoneOn,
         click: function () {
             ElectronMeet.status(function (status) {
