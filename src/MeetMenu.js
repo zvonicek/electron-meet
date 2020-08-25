@@ -1,12 +1,12 @@
-const {Menu} = require('electron');
+const {Menu, app} = require('electron');
 const dataStore = require('./DataStore');
 const Bus = require('./Bus');
 const Icons = require('./Icons');
 const ElectronMeet = require('./ElectronMeet');
 
 let contextMenu;
+const displayTrayMenu = (tray) => {
 
-const displayMenu = (tray) => {
     let localPreferences = dataStore.getPreferences();
     const mainMenuTemplate = [{
         label: 'Microphone',
@@ -90,4 +90,17 @@ Bus.on('camera-status', (value) => {
     contextMenu.getMenuItemById('is-camera-on').checked = value;
 });
 
-module.exports = displayMenu;
+const setDockMenu = (app) => {
+    const mainMenuTemplate = [{
+        label: 'Home',
+        click: function () {
+            Bus.emit('home');
+        }
+    }];
+    app.dock.setMenu(Menu.buildFromTemplate(mainMenuTemplate));
+};
+
+module.exports = {
+    displayTrayMenu,
+    setDockMenu
+}

@@ -2,7 +2,7 @@ const {app, globalShortcut, BrowserWindow, Tray} = require('electron');
 const path = require('path');
 
 const Bus = require('./src/Bus');
-const displayMenu = require('./src/MeetMenu');
+const menu = require('./src/MeetMenu');
 const ElectronMeet = require('./src/ElectronMeet');
 const dataStore = require('./src/DataStore');
 const Icons = require('./src/Icons');
@@ -34,7 +34,7 @@ const createMenu = () => {
         }
     });    
 
-    displayMenu(tray);
+    menu.displayTrayMenu(tray);
 };
 
 const storePosition = () => {
@@ -102,7 +102,7 @@ const createWindow = () => {
 
     mainWindow.webContents.on('dom-ready', function () {
         dataStore.addHistory(mainWindow.webContents.history[mainWindow.webContents.history.length - 1]).flush();
-        displayMenu(tray);
+        menu.displayTrayMenu(tray);
         initializePage();
     });
 
@@ -142,6 +142,8 @@ app.on('activate', function () {
 });
 
 app.on('will-finish-launching', () => {
+    menu.setDockMenu(app);
+
     app.on('open-url', function(event, url) {
         if (dataStore.isValidUrl(url)) {
             mainWindow.loadURL(url);
