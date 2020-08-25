@@ -37,12 +37,7 @@ const displayMenu = (tray) => {
         click: function () {
             Bus.emit('home');
         }
-    }, {
-        label: 'Main window',
-        click: function () {
-            Bus.emit('create-window');
-        }
-    }, {
+    }, {        
         type: 'separator'
     }, {
         label: 'Autoreconnect on startup',
@@ -81,7 +76,7 @@ const displayMenu = (tray) => {
             click: function (menuItem) {
                 Bus.emit('open-room', menuItem.label);
             }
-        });
+        });    
     });
 
     contextMenu = Menu.buildFromTemplate(mainMenuTemplate);

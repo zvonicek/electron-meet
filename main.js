@@ -110,15 +110,13 @@ const createWindow = () => {
     mainWindow.setTouchBar(Touchbar);
 };
 
-Bus.on('create-window', (tag) => {
-    createWindow();
-});
-
 Bus.on('open-room', (tag) => {
+    createWindow();
     mainWindow.loadURL(dataStore.getRoomUrl(tag));
 });
 
 Bus.on('home', (tag) => {
+    createWindow();
     mainWindow.loadURL(dataStore.getHomeUrl());
 });
 
