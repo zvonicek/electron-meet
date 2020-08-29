@@ -7,7 +7,7 @@ const ElectronMeet = require('./src/ElectronMeet');
 const dataStore = require('./src/DataStore');
 const Icons = require('./src/Icons');
 const Touchbar = require('./src/Touchbar');
-
+const { exec } = require("child_process");
 const {init, action, status} = require('./src/ElectronMeet');
 
 let mainWindow, tray, lastImage;
@@ -118,6 +118,10 @@ Bus.on('open-room', (tag) => {
 Bus.on('home', (tag) => {
     createWindow();
     mainWindow.loadURL(dataStore.getHomeUrl());
+});
+
+Bus.on('open-in-chrome', (tag) => {
+    exec('/usr/bin/open -a "/Applications/Google Chrome.app" "' + mainWindow.webContents.getURL() + '"');
 });
 
 app.whenReady().then(() => {

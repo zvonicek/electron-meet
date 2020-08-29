@@ -37,6 +37,11 @@ const displayTrayMenu = (tray) => {
         click: function () {
             Bus.emit('home');
         }
+    }, { 
+        label: 'Open in Google Chrome',
+        click: function () {
+            Bus.emit('open-in-chrome');
+        }
     }, {        
         type: 'separator'
     }, {
