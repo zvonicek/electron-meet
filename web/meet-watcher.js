@@ -4,6 +4,7 @@
         isMediaControlPresent: false,
         isMicrophoneOn: false,
         isCameraOn: false,
+        calendarEvents: []
     };
 
     let electronMeetActions = {
@@ -13,6 +14,20 @@
         domMicrophone: () => document.querySelectorAll('[data-is-muted]')[1],
 
         domCamera: () => document.querySelectorAll('[data-is-muted]')[3],
+
+        calendarEvents: () => {
+            if (document.querySelectorAll('[data-unresolved-meeting-id]').length > 0) {
+                return null;
+            }
+
+            let elements = document.querySelectorAll('div[data-call-id]');
+            var events = [];
+            elements.forEach(function(element) {
+                events.push({'id': element.getAttribute('data-call-id'), 'name': element.getAttribute('aria-label')});
+            });
+
+            return events;
+        },
 
         isMicrophoneOn: () => {
             let selector = electronMeetActions.domMicrophone();
@@ -68,5 +83,6 @@ window.addEventListener('DOMContentLoaded', () => {
         document.electronMeetStatus.isMediaControlPresent = document.electronMeetActions.mediaControlPresent();
         document.electronMeetStatus.isMicrophoneOn = document.electronMeetActions.isMicrophoneOn();
         document.electronMeetStatus.isCameraOn = document.electronMeetActions.isCameraOn();
+        document.electronMeetStatus.calendarEvents = document.electronMeetActions.calendarEvents();
     }, 300);
 });

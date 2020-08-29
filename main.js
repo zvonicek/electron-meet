@@ -66,6 +66,7 @@ const watcher = () => {
     ElectronMeet.status(function (status) {
         Bus.emit('microphone-status', status.isMicrophoneOn);
         Bus.emit('camera-status', status.isCameraOn);
+        Bus.emit('calendar-change', status.calendarEvents);
         let image = status.isMicrophoneOn ? Icons.microphoneOn : Icons.microphoneOff;
         if (lastImage !== image) {
             tray.setImage(image);

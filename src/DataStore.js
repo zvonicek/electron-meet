@@ -10,12 +10,14 @@ class DataStore extends Store {
         this.getHistory();
         this.getPosition();
         this.getPreferences();
+        this.getCalendar();
     }
 
     flush() {
         this.set('history', this.history);
         this.set('position', this.position);
         this.set('preferences', this.preferences);
+        this.set('calendar', this.calendar);
         return this;
     }
 
@@ -47,6 +49,11 @@ class DataStore extends Store {
         return this.history;
     }
 
+    getCalendar() {
+        this.calendar = this.get('calendar') || [];
+        return this.calendar;
+    }    
+
     getPosition() {
         this.position = this.get('position') || {x: 20, y: 20, width: 1000, height: 700};
         return this.position;
@@ -59,6 +66,11 @@ class DataStore extends Store {
             reconnectOnStartup: true,
         };
         return this.preferences;
+    }
+    
+    setCalendar(calendar) {
+        this.calendar = calendar;
+        return this;        
     }
 
     addHistory(url) {

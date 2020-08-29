@@ -5,7 +5,10 @@ const Icons = require('./Icons');
 const ElectronMeet = require('./ElectronMeet');
 
 let contextMenu;
+let _tray;
+
 const displayTrayMenu = (tray) => {
+    _tray = tray;
 
     let localPreferences = dataStore.getPreferences();
     const mainMenuTemplate = [{
@@ -42,7 +45,7 @@ const displayTrayMenu = (tray) => {
         click: function () {
             Bus.emit('open-in-chrome');
         }
-    }, {        
+    }, {                
         type: 'separator'
     }, {
         label: 'Autoreconnect on startup',
@@ -75,11 +78,11 @@ const displayTrayMenu = (tray) => {
         type: 'separator'
     }];
 
-    dataStore.getHistory().forEach(function (tag) {
+    dataStore.getCalendar().forEach(function (event) {
         mainMenuTemplate.push({
-            label: tag,
+            label: event.name,
             click: function (menuItem) {
-                Bus.emit('open-room', menuItem.label);
+                Bus.emit('open-room', event.id);
             }
         });    
     });
@@ -93,6 +96,18 @@ Bus.on('microphone-status', (value) => {
 });
 Bus.on('camera-status', (value) => {
     contextMenu.getMenuItemById('is-camera-on').checked = value;
+});
+Bus.on('calendar-change', (value) => {
+    if (value == null) {
+        return;
+    }
+
+    if (JSON.stringify(value) == JSON.stringify(dataStore.getCalendar())) {
+        return;
+    }
+
+    dataStore.setCalendar(value).flush();        
+    displayTrayMenu(_tray);
 });
 
 const setDockMenu = (app) => {
