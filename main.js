@@ -107,6 +107,11 @@ const createWindow = () => {
         initializePage();
     });
 
+    mainWindow.webContents.on('new-window', function(e, url) {
+        e.preventDefault();
+        require('electron').shell.openExternal(url);
+      });
+
     mainWindow.loadURL(dataStore.getInitialUrl());
     mainWindow.setTouchBar(Touchbar);
 };
